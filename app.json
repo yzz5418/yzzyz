@@ -7,7 +7,9 @@
     "pages/statistics/statistics",
     "pages/goals/goals",
     "pages/register/register",
-    "pages/userinfo/userinfo"
+    "pages/userinfo/userinfo",
+    "pages/chincks/chincks",
+    "pages/settings/settings"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -29,13 +31,13 @@
         "iconPath": "/pages/images/yz.png",
         "selectedIconPath": "/pages/images/yz.png"
       },
-      
       {
         "pagePath": "pages/goals/goals",
         "text": "目标",
         "iconPath": "/pages/images/yz.png",
         "selectedIconPath": "/pages/images/yz.png"
-      }, {
+      },
+      {
         "pagePath": "pages/userinfo/userinfo",
         "text": "用户",
         "iconPath": "/pages/images/yz.png",

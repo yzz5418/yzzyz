@@ -1,0 +1,11 @@
+<view class="container">
+  <view class="setting-item">
+    <text class="item-label">账号</text>
+    <input class="item-input" 
+           placeholder="请输入账号" 
+           bindinput="onAccountInput" 
+           value="{{account}}" />
+  </view>
+  
+  <button class="save-btn" bindtap="saveSettings">保存设置</button>
+</view>

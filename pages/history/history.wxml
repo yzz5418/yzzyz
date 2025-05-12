@@ -1,7 +1,32 @@
 <view class="container">
-  <view wx:for="{{records}}" wx:key="id" class="record-item">
-    <view>项目: {{item.project}}</view>
-    <view>时长: {{item.duration}} 分钟</view>
-    <view>日期: {{item.date}}</view>
+  
+
+  <!-- 空状态 -->
+  <view wx:if="{{!errorText && records.length === 0}}" class="empty-container">
+    <text class="empty-text">{{emptyText}}</text>
   </view>
-</view>    
+
+  <!-- 记录列表 -->
+  <view wx:else class="records-list">
+    <view wx:for="{{records}}" wx:key="_id" class="record-item">
+      <view class="record-header">
+        <text class="record-date">{{item.formattedDate}}</text>
+        <text class="record-time">{{item.formattedTime}}</text>
+      </view>
+      <view class="record-content">
+        <view class="record-type">
+          <text class="type-label">类型:</text>
+          <text class="type-value">{{item.type}}</text>
+        </view>
+        <view class="record-duration">
+          <text class="duration-label">时长:</text>
+          <text class="duration-value">{{item.duration}} 分钟</text>
+        </view>
+        <view class="record-note" wx:if="{{item.note}}">
+          <text class="note-label">备注:</text>
+          <text class="note-value">{{item.note}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

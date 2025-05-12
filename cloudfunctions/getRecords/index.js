@@ -1,49 +1,45 @@
-// cloudfunctions/getrecord/index.js
+// cloudfunctions/getRecords/index.js
 const cloud = require('wx-server-sdk')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
+const _ = db.command
 
 exports.main = async (event, context) => {
   try {
-    const { userId, recordId } = event
-    
-    // 1. 检查参数
-    if (!userId || !recordId) {
+    // 获取当前用户的 openid，这里假设使用云开发的安全调用机制
+    const wxContext = cloud.getWXContext()
+    const account = wx.getStorageSync('account')
+
+    // 从数据库中查询用户信息，获取用户 ID
+    const userRes = await db.collection('users').where({
+      account: account
+    }).get()
+
+    if (userRes.data.length === 0) {
       return {
         success: false,
-        message: '缺少必要参数'
+        message: '未找到该用户信息'
       }
     }
-    
-    // 2. 查询打卡记录
-    const recordRes = await db.collection('checkins').doc(recordId).get()
-    const record = recordRes.data
-    
-    // 3. 验证记录归属
-    if (!record || record.userId !== userId) {
-      return {
-        success: false,
-        message: '记录不存在或无权限访问'
-      }
-    }
-    
-    // 4. 获取用户信息（确保与 addrecord 中使用的用户信息一致）
-    const userRes = await db.collection('users').doc(userId).get()
-    const user = userRes.data
-    
-    // 5. 返回完整记录，包含用户 account 信息
+
+    const userId = userRes.data[0]._id
+
+    // 查询该用户的所有打卡记录
+    const recordsRes = await db.collection('checkins').where({
+      userId: userId
+    }).orderBy('date', 'desc').get()
+
+    const records = recordsRes.data
+
     return {
       success: true,
-      data: {
-        ...record,
-        account: user.account // 确保包含 account 字段
-      }
+      data: records
     }
   } catch (e) {
     console.error('获取打卡记录失败', e)
     return {
       success: false,
-      message: '获取打卡记录失败'
+      message: '获取打卡记录失败，请稍后重试'
     }
   }
 }

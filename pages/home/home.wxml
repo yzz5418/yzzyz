@@ -1,38 +1,108 @@
+<!-- pages/home/home.wxml -->
 <view class="container">
-    <!-- 推销课程部分 -->
-    <view class="course-promotion">
-        <image src="/pages/images/shoubiao.png" mode="aspectFit"></image>
-        <view class="course-info">
-            <text class="course-title">专业健身课程</text>
-            <text class="course-desc">由专业教练指导，助你快速达到健身目标。</text>
-            <button bindtap="showQRCode" data-price="299" class="pay-btn">立即报名: ￥299</button>
-        </view>
+  <!-- 顶部导航栏 -->
+  <view class="header">
+    <view class="greeting">
+      <text class="time-greeting">{{timeGreeting}}</text>
+      <text class="username">{{userInfo.account || '健身达人'}}</text>
     </view>
+    <navigator class="settings-btn" url="/pages/settings/settings">
+      <i class="fa fa-cog"></i>
+    </navigator>
+  </view>
 
-    <!-- 更多课程展示 -->
-    <view class="more-courses">
-        <text class="section-title">更多热门课程</text>
-        <view class="course-list">
-            <view class="course-item" wx:for="{{courses}}" wx:key="*this">
-                <image src="{{item.imgUrl}}" mode="aspectFit"></image>
-                <view class="course-item-info">
-                    <text class="course-item-title">{{item.title}}</text>
-                    <text class="course-item-price">￥{{item.price}}</text>
-                    <button bindtap="showQRCode" data-price="{{item.price}}" class="pay-btn">立即报名</button>
-                </view>
-            </view>
-        </view>
+  <!-- 数据概览卡片 -->
+  <view class="stats-container">
+    <view class="stats-card checkins-card">
+      <text class="card-title">总打卡次数</text>
+      <text class="card-value">{{userInfo.totalCheckins || 0}}</text>
+      <text class="card-unit">次</text>
     </view>
-
-    <!-- 二维码弹窗 -->
-    <view class="modal-mask" wx:if="{{showModal}}" bindtap="hideQRCode">
-        <view class="modal-container">
-            <view class="modal-content">
-                <text class="modal-title">请扫码支付 {{price}} 元</text>
-                <image src="/pages/images/erweima.jpg" mode="aspectFit"></image>
-                <button bindtap="hideQRCode" class="close-btn">关闭</button>
-            </view>
-        </view>
-    </view>
-</view>
     
+    <view class="stats-card duration-card">
+      <text class="card-title">总时长</text>
+      <text class="card-value">{{userInfo.totalDuration || 0}}</text>
+      <text class="card-unit">分钟</text>
+    </view>
+    
+    <view class="stats-card streak-card">
+      <text class="card-title">连续打卡</text>
+      <text class="card-value">{{userInfo.continuousCheckins || 0}}</text>
+      <text class="card-unit">天</text>
+    </view>
+  </view>
+
+  <!-- 今日打卡状态 -->
+  <view class="today-status" wx:if="{{todayChecked}}">
+    <text class="status-icon">✅</text>
+    <text class="status-text">今日已打卡</text>
+    <text class="status-detail">今日打卡: {{todayCheckin.type}}, {{todayCheckin.duration}}分钟</text>
+  </view>
+  
+  <view class="today-status" wx:else>
+    <text class="status-icon">⏰</text>
+    <text class="status-text">今日尚未打卡</text>
+    <text class="status-detail">点击下方按钮开始今日打卡</text>
+  </view>
+
+  <!-- 快速打卡 -->
+  <view class="quick-checkin">
+    <text class="section-title">快速打卡</text>
+    <view class="checkin-options">
+      <view class="option-btn" bindtap="startCheckin" data-type="跑步">
+        <i class="fa fa-running"></i>
+        <text>跑步</text>
+      </view>
+      <view class="option-btn" bindtap="startCheckin" data-type="健身">
+        <i class="fa fa-dumbbell"></i>
+        <text>健身</text>
+      </view>
+      <view class="option-btn" bindtap="startCheckin" data-type="游泳">
+        <i class="fa fa-swimmer"></i>
+        <text>游泳</text>
+      </view>
+      <view class="option-btn" bindtap="startCheckin" data-type="瑜伽">
+        <i class="fa fa-spa"></i>
+        <text>瑜伽</text>
+      </view>
+    </view>
+    <view class="custom-option" bindtap="goToCheckin">
+      <text>自定义打卡</text>
+      <i class="fa fa-arrow-right"></i>
+    </view>
+  </view>
+
+  <!-- 最近记录 -->
+  <view class="recent-records">
+    <view class="section-header">
+      <text class="section-title">最近打卡记录</text>
+      <navigator class="view-all" url="/pages/history/history">
+        <text>查看全部</text>
+        <i class="fa fa-angle-right"></i>
+      </navigator>
+    </view>
+    
+    <view class="records-list" wx:if="{{recentRecords.length > 0}}">
+      <view class="record-item" wx:for="{{recentRecords}}" wx:key="_id" bindtap="viewRecordDetail" data-id="{{item._id}}">
+        <view class="record-date">
+          <text class="date">{{item.formattedDate}}</text>
+          <text class="time">{{item.formattedTime}}</text>
+        </view>
+        <view class="record-content">
+          <view class="record-type">
+            <i class="fa fa-circle record-dot" style="color: {{item.typeColor}}"></i>
+            <text class="type-name">{{item.type}}</text>
+          </view>
+          <view class="record-duration">
+            <i class="fa fa-clock-o"></i>
+            <text>{{item.duration}}分钟</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="empty-records" wx:else>
+      <text>暂无打卡记录</text>
+    </view>
+  </view>
+</view>

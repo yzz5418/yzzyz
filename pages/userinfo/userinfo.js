@@ -1,47 +1,52 @@
 // pages/userinfo/userinfo.js
+const app = getApp();
+
 Page({
   data: {
     userInfo: {
-      account: '',       // 存储账号信息
-      totalCheckins: 0,  // 总打卡次数
-      totalDuration: 0,  // 总打卡时长
-      loading: true      // 加载状态
+      account: '',
+      totalCheckins: 0,
+      totalDuration: 0,
+      loading: true
     }
   },
   
   onLoad: function() {
-    // 从全局数据或本地存储获取 account
-    this.getAccount();
     this.getUserStatistics();
   },
   
   onShow: function() {
-    // 每次页面显示时更新 account
-    this.getAccount();
     this.getUserStatistics();
+  }, 
+  goToHistory: function() {
+    // 跳转到历史记录页面
+    wx.navigateTo({
+      url: '/pages/history/history' // 根据实际页面路径修改
+    });
+  },
+  contactCustomerService: function() {
+    // 实现联系客服的逻辑
+    wx.showModal({
+      title: '联系客服',
+      content: '如有问题，请拨打客服电话：400-123-4567',
+      confirmText: '拨打',
+      cancelText: '稍后',
+      success: (res) => {
+        if (res.confirm) {
+          // 调用拨号功能
+          wx.makePhoneCall({
+            phoneNumber: '4001234567' // 客服电话
+          });
+        }
+      }
+    });
   },
   
-  // 获取账号信息
-  getAccount: function() {
-    const app = getApp();
+  getUserStatistics: function() {
+    const userInfo = app.globalData.userInfo;
     
-    // 优先从全局数据获取
-    if (app.globalData.userInfo && app.globalData.userInfo.account) {
-      this.setData({ 'userInfo.account': app.globalData.userInfo.account });
-      return;
-    }
-    
-    // 否则从本地存储获取
-    const account = wx.getStorageSync('account');
-    if (account) {
-      this.setData({ 'userInfo.account': account });
-      
-      // 更新全局数据
-      if (!app.globalData.userInfo) {
-        app.globalData.userInfo = { account };
-      }
-    } else {
-      // 若未获取到账号，跳转到登录页
+    // 检查用户是否已登录
+    if (!userInfo || !userInfo.account) {
       wx.showToast({
         icon: 'none',
         title: '请先登录',
@@ -51,46 +56,35 @@ Page({
           }, 1500);
         }
       });
-    }
-  },
-  
-  // 获取统计信息
-  getUserStatistics: function() {
-    const account = this.data.userInfo.account;
-    
-    if (!account) {
-      this.setData({ 'userInfo.loading': false });
       return;
     }
     
-    wx.cloud.callFunction({
-      name: 'getStatistics',
-      data: { account },  // 传递 account 给云函数
-      success: res => {
-        console.log('获取统计信息成功:', res);
-        
-        if (res.result.success) {
-          this.setData({
-            'userInfo.totalCheckins': res.result.totalCheckins,
-            'userInfo.totalDuration': res.result.totalDuration,
-            'userInfo.loading': false
-          });
-        } else {
-          wx.showToast({
-            icon: 'none',
-            title: res.result.message || '获取统计失败'
-          });
-          this.setData({ 'userInfo.loading': false });
+    
+    // 直接从数据库获取统计信息
+    wx.cloud.database().collection('users')
+      .where({ account: userInfo.account })
+      .get()
+      .then(res => {
+        if (res.data.length === 0) {
+          throw new Error('用户记录不存在');
         }
-      },
-      fail: err => {
+        
+        const userData = res.data[0];
+        this.setData({
+          'userInfo.account': userInfo.account,
+          'userInfo.totalCheckins': userData.totalCheckins || 0,
+          'userInfo.totalDuration': userData.totalDuration || 0,
+          'userInfo.loading': false
+        });
+      })
+      .catch(err => {
         console.error('获取统计信息失败:', err);
         wx.showToast({
           icon: 'none',
-          title: '网络错误，请重试'
+          title: '获取统计信息失败'
         });
         this.setData({ 'userInfo.loading': false });
-      }
-    });
+      });
   }
+  
 });
