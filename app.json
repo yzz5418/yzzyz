@@ -9,7 +9,8 @@
     "pages/register/register",
     "pages/userinfo/userinfo",
     "pages/chincks/chincks",
-    "pages/settings/settings"
+    "pages/settings/settings",
+    "pages/courseDetail/courseDetail"
   ],
   "window": {
     "backgroundTextStyle": "light",

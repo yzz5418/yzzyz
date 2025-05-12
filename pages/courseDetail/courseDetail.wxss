@@ -1,0 +1,24 @@
+.container {
+  padding: 20rpx;
+}
+
+.course-info {
+  padding: 20rpx;
+}
+
+.course-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.course-price {
+  font-size: 24rpx;
+  color: #007aff;
+  margin-bottom: 20rpx;
+}
+
+.course-desc {
+  font-size: 24rpx;
+  color: #666;
+}

@@ -1,0 +1,7 @@
+<view class="container">
+  <view class="course-info">
+    <text class="course-title">{{course.title}}</text>
+    <text class="course-price">￥{{course.price}}</text>
+    <text class="course-desc">{{course.desc}}</text>
+  </view>
+</view>
