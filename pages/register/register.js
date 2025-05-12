@@ -8,9 +8,9 @@ Page({
     confirmPassword: '',
     errorMessage: '',
     passwordType: 'password',
-    showPassword: false,
+    showPassword: true,
     confirmPasswordType: 'password',
-    showConfirmPassword: false
+    showConfirmPassword: true
   },
   
   onAccountInput(e) {

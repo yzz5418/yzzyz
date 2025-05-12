@@ -9,7 +9,7 @@ exports.main = async (event, context) => {
     const openid = wxContext.OPENID
     
     // 获取所有打卡记录
-    const checkinRecords = await db.collection('checkinRecords')
+    const checkinRecords = await db.collection('checkins')
       .where({
         _openid: openid
       })

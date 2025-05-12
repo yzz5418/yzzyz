@@ -23,7 +23,7 @@
       <text class="label">密码</text>
       <view class="input-wrapper password-input">
         <input 
-          type="{{passwordType}}" 
+         password="{{showPassword}}" 
           placeholder="请输入密码" 
           bindinput="onPasswordInput" 
           placeholder-class="placeholder-style"
@@ -31,7 +31,7 @@
         <view class="eye-button" bindtap="togglePasswordVisibility">
           <image 
             class="eye-icon" 
-            src="{{showPassword ? '/pages/images/eye-open.png' : '/pages/images/eye-close.png'}}" 
+            src="{{showPassword ? '/pages/images/eye-close.png' : '/pages/images/eye-open.png'}}" 
             mode="aspectFit" 
           />
         </view>
@@ -46,7 +46,7 @@
       <text class="label">确认密码</text>
       <view class="input-wrapper password-input">
         <input 
-          type="{{confirmPasswordType}}" 
+          password="{{showConfirmPassword}}" 
           placeholder="请再次输入密码" 
           bindinput="onConfirmPasswordInput" 
           placeholder-class="placeholder-style"
@@ -54,7 +54,7 @@
         <view class="eye-button" bindtap="toggleConfirmPasswordVisibility">
           <image 
             class="eye-icon" 
-            src="{{showConfirmPassword ? '/pages/images/eye-open.png' : '/pages/images/eye-close.png'}}" 
+            src="{{showConfirmPassword ? '/pages/images/eye-close.png' : '/pages/images/eye-open.png'}}" 
             mode="aspectFit" 
           />
         </view>
