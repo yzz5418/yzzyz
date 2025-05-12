@@ -161,37 +161,6 @@
 .toast-message {
   display: block;
 }
-/* pages/index/index.wxss */
-/* 其他样式保持不变... */
-
-.type-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20rpx;
-}
-
-.type-item {
-  padding: 16rpx 32rpx;
-  background-color: #f0f0f0;
-  border-radius: 40rpx;
-  font-size: 28rpx;
-  color: #666;
-  text-align: center;
-  min-width: 120rpx;
-  transition: all 0.2s;
-  border: 2rpx solid transparent;
-}
-
-.type-item:active {
-  transform: scale(0.98);
-}
-
-.type-item.selected {
-  background-color: #fff;
-  color: #009688;
-  border-color: #009688;
-  font-weight: 500;
-}
 
 /* 新增：悬停效果（仅桌面模拟器有效） */
 @media (hover: hover) {
@@ -203,5 +172,33 @@
     background-color: #f7fbfb;
   }
 }
+.type-item {
+  /* 确保字体颜色和背景颜色不会导致文字不可见 */
+  color: #333; 
+  background-color: #f0f0f0;
+  /* 其他样式... */
+}
 
-/* 其他样式保持不变... */
+.picker {
+  padding: 16rpx 32rpx;
+  background-color: #f0f0f0;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  color: #666;
+  text-align: center;
+  min-width: 120rpx;
+  transition: all 0.3s;
+}
+
+.picker:active {
+  transform: scale(0.98);
+}
+
+.delete-btn {
+  background-color: #00ffaa;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 10px;
+}
