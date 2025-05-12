@@ -28,7 +28,7 @@ exports.main = async (event, context) => {
     }
     
     // 4. 获取用户信息（确保与 addrecord 中使用的用户信息一致）
-    const userRes = await db.collection('users').doc(userId).get()
+    const userRes = await db.collection('users').doc(account).get()
     const user = userRes.data
     
     // 5. 返回完整记录，包含用户 account 信息

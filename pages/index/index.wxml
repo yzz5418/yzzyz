@@ -1,78 +1,74 @@
 <!-- pages/index/index.wxml -->
 <view class="container">
-  <!-- 用户信息卡片 -->
-  <view class="user-card">
-    <view class="user-info">
-      <text class="user-account">账号: {{userInfo.account || '未登录'}}</text>
-      <view class="stats">
-        <view class="stat-item">
-          <text class="stat-value">{{userInfo.totalCheckins || 0}}</text>
-          <text class="stat-label">总打卡次数</text>
+    <!-- 用户信息卡片 -->
+    <view class="user-card">
+        <view class="user-info">
+            <text class="user-account">账号: {{userInfo.account || '未登录'}}</text>
+            <view class="stats">
+                <view class="stat-item">
+                    <text class="stat-value">{{userInfo.totalCheckins || 0}}</text>
+                    <text class="stat-label">总打卡次数</text>
+                </view>
+                <view class="stat-item">
+                    <text class="stat-value">{{userInfo.totalDuration || 0}}</text>
+                    <text class="stat-label">总时长(分钟)</text>
+                </view>
+            </view>
         </view>
-        <view class="stat-item">
-          <text class="stat-value">{{userInfo.totalDuration || 0}}</text>
-          <text class="stat-label">总时长(分钟)</text>
+    </view>
+
+    <!-- 打卡日期 -->
+    <view class="date-container">
+        <text class="current-date">{{currentDate}}</text>
+    </view>
+
+    <!-- 打卡表单 -->
+    <view class="form-container">
+        <!-- 打卡类型选择 -->
+        <view class="form-group">
+            <text class="form-label">打卡类型</text>
+            <picker mode="selector" range="{{types}}" bindchange="onTypeSelect" value="{{selectedTypeIndex}}">
+                <view class="picker">
+                    {{selectedType || '请选择打卡类型'}}
+                </view>
+            </picker>
         </view>
-      </view>
-      <!-- 添加删除按钮 -->
-      <button class="delete-btn" bindtap="deleteRecord" disabled="{{!userInfo.account}}">
-        删除所有记录
-      </button>
-    </view>
-  </view>
 
-  <!-- 打卡日期 -->
-  <view class="date-container">
-    <text class="current-date">{{currentDate}}</text>
-  </view>
-
-  <!-- 打卡表单 -->
-  <view class="form-container">
-    <!-- 打卡类型选择 -->
-    <view class="form-group">
-      <text class="form-label">打卡类型</text>
-      <picker mode="selector" range="{{types}}" bindchange="onTypeSelect" value="{{selectedTypeIndex}}">
-        <view class="picker">
-          {{selectedType || '请选择打卡类型'}}
+        <!-- 打卡时长 -->
+        <view class="form-group">
+            <text class="form-label">打卡时长(分钟)</text>
+            <input 
+                type="digit" 
+                class="duration-input" 
+                placeholder="请输入时长" 
+                bindinput="onDurationInput" 
+                value="{{duration}}"
+            />
         </view>
-      </picker>
+
+        <!-- 备注信息 -->
+        <view class="form-group">
+            <text class="form-label">备注(选填)</text>
+            <textarea 
+                class="note-input" 
+                placeholder="添加备注信息" 
+                bindinput="onNoteInput" 
+                value="{{note}}"
+            />
+        </view>
+
+        <!-- 提交按钮 -->
+        <button 
+            class="submit-btn" 
+            bindtap="submitRecord" 
+            disabled="{{isLoading || !selectedType || !duration}}"
+        >
+            {{isLoading ? '提交中...' : '提交打卡'}}
+        </button>
     </view>
 
-    <!-- 打卡时长 -->
-    <view class="form-group">
-      <text class="form-label">打卡时长(分钟)</text>
-      <input 
-        type="digit" 
-        class="duration-input" 
-        placeholder="请输入时长" 
-        bindinput="onDurationInput" 
-        value="{{duration}}"
-      />
+    <!-- 成功提示 -->
+    <view class="toast" wx:if="{{showSuccessToast}}">
+        <text class="toast-message">{{successMessage}}</text>
     </view>
-
-    <!-- 备注信息 -->
-    <view class="form-group">
-      <text class="form-label">备注(选填)</text>
-      <textarea 
-        class="note-input" 
-        placeholder="添加备注信息" 
-        bindinput="onNoteInput" 
-        value="{{note}}"
-      />
-    </view>
-
-    <!-- 提交按钮 -->
-    <button 
-      class="submit-btn" 
-      bindtap="submitRecord" 
-      disabled="{{isLoading ||!selectedType ||!duration}}"
-    >
-      {{isLoading? '提交中...' : '提交打卡'}}
-    </button>
-  </view>
-
-  <!-- 成功提示 -->
-  <view class="toast" wx:if="{{showSuccessToast}}">
-    <text class="toast-message">{{successMessage}}</text>
-  </view>
 </view>

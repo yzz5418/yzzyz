@@ -69,6 +69,8 @@ Page({
         account: account,
         userId: res.data[0]._id
       }
+
+      
       
       wx.setStorageSync('userInfo', userInfo)
       wx.setStorageSync('account', this.data.account)

@@ -1,44 +1,43 @@
-// cloudfunctions/getStatistics/index.js
-const cloud = require('wx-server-sdk')
-cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
-const db = cloud.database()
+// yzzyz/cloudfunctions/getStatistics/index.js
+const cloud = require('wx-server-sdk');
+cloud.init();
+const db = cloud.database();
 
 exports.main = async (event, context) => {
-  try {
-    const wxContext = cloud.getWXContext()
-    const openid = wxContext.OPENID
-    
-    // 获取所有打卡记录
-    const checkinRecords = await db.collection('checkins')
-      .where({
-        _openid: openid
-      })
-      .get()
-    
-    // 计算总打卡次数
-    const totalCheckins = checkinRecords.data.length
-    
-    // 计算总打卡时长（毫秒转分钟）
-    let totalDuration = 0
-    checkinRecords.data.forEach(record => {
-      // 确保记录同时包含开始和结束时间
-      if (record.startTime && record.endTime) {
-        const startTime = new Date(record.startTime).getTime()
-        const endTime = new Date(record.endTime).getTime()
-        
-        // 确保结束时间大于开始时间
-        if (endTime > startTime) {
-          totalDuration += (endTime - startTime) / (1000 * 60) // 转换为分钟
+    const wxContext = cloud.getWXContext();
+    try {
+        // 从本地存储获取账号信息
+        const account = wx.getStorageSync('account');
+        if (!account) {
+            return {
+                success: false,
+                message: '未获取到用户账号信息'
+            };
         }
-      }
-    })
-    
-    return {
-      totalCheckins,
-      totalDuration: Math.round(totalDuration) // 四舍五入取整
+
+        // 查询 users 表中当前用户的总打卡次数和总时长
+        const userRes = await db.collection('users').where({
+            account: account
+        }).get();
+
+        if (userRes.data.length === 0) {
+            return {
+                success: false,
+                message: '未找到该用户信息'
+            };
+        }
+
+        const user = userRes.data[0];
+        return {
+            success: true,
+            totalCheckins: user.totalCheckins,
+            totalDuration: user.totalDuration
+        };
+    } catch (e) {
+        console.error('获取统计信息失败', e);
+        return {
+            success: false,
+            message: '获取统计信息失败'
+        };
     }
-  } catch (e) {
-    console.error('获取统计信息失败', e)
-    throw e
-  }
-}
+};
