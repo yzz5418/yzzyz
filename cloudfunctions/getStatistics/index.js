@@ -4,7 +4,6 @@ cloud.init();
 const db = cloud.database();
 
 exports.main = async (event, context) => {
-    const wxContext = cloud.getWXContext();
     try {
         // 从本地存储获取账号信息
         const account = wx.getStorageSync('account');

@@ -74,6 +74,8 @@ Page({
       
       wx.setStorageSync('userInfo', userInfo)
       wx.setStorageSync('account', this.data.account)
+      const app = getApp();
+      app.globalData.userInfo = { account };
       
       // 跳转到主页面
       wx.switchTab({
