@@ -1,21 +1,19 @@
-// cloudfunctions/getCourses/index.js
-const cloud = require('wx-server-sdk');
-cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
-const db = cloud.database();
+const cloud = require('wx-server-sdk')
+cloud.init()
+const db = cloud.database()
 
 exports.main = async (event, context) => {
   try {
-    const coursesRes = await db.collection('courses').get();
-    const courses = coursesRes.data;
+    const res = await db.collection('courses').get()
     return {
       success: true,
-      data: courses
-    };
+      data: res.data
+    }
   } catch (e) {
-    console.error('获取课程数据失败', e);
+    console.error('获取课程数据失败', e)
     return {
       success: false,
-      message: '获取课程数据失败，请稍后重试'
-    };
+      message: '获取课程数据失败'
+    }
   }
-};
+}
