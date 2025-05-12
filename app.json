@@ -1,0 +1,46 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/home/home",
+    "pages/index/index",
+    "pages/history/history",
+    "pages/statistics/statistics",
+    "pages/goals/goals",
+    "pages/register/register",
+    "pages/userinfo/userinfo"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#009688",
+    "navigationBarTitleText": "健身打卡",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "主界面",
+        "iconPath": "/pages/images/home.jpg",
+        "selectedIconPath": "/pages/images/home.jpg"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "打卡",
+        "iconPath": "/pages/images/yz.png",
+        "selectedIconPath": "/pages/images/yz.png"
+      },
+      
+      {
+        "pagePath": "pages/goals/goals",
+        "text": "目标",
+        "iconPath": "/pages/images/yz.png",
+        "selectedIconPath": "/pages/images/yz.png"
+      }, {
+        "pagePath": "pages/userinfo/userinfo",
+        "text": "用户",
+        "iconPath": "/pages/images/yz.png",
+        "selectedIconPath": "/pages/images/yz.png"
+      }
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+<view class="container">
+  <view>总打卡次数: {{totalCheckins}}</view>
+  <view>总健身时长: {{totalDuration}} 分钟</view>
+</view>    

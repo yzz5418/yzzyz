@@ -1,0 +1,38 @@
+<view class="container">
+    <!-- 推销课程部分 -->
+    <view class="course-promotion">
+        <image src="/pages/images/shoubiao.png" mode="aspectFit"></image>
+        <view class="course-info">
+            <text class="course-title">专业健身课程</text>
+            <text class="course-desc">由专业教练指导，助你快速达到健身目标。</text>
+            <button bindtap="showQRCode" data-price="299" class="pay-btn">立即报名: ￥299</button>
+        </view>
+    </view>
+
+    <!-- 更多课程展示 -->
+    <view class="more-courses">
+        <text class="section-title">更多热门课程</text>
+        <view class="course-list">
+            <view class="course-item" wx:for="{{courses}}" wx:key="*this">
+                <image src="{{item.imgUrl}}" mode="aspectFit"></image>
+                <view class="course-item-info">
+                    <text class="course-item-title">{{item.title}}</text>
+                    <text class="course-item-price">￥{{item.price}}</text>
+                    <button bindtap="showQRCode" data-price="{{item.price}}" class="pay-btn">立即报名</button>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <!-- 二维码弹窗 -->
+    <view class="modal-mask" wx:if="{{showModal}}" bindtap="hideQRCode">
+        <view class="modal-container">
+            <view class="modal-content">
+                <text class="modal-title">请扫码支付 {{price}} 元</text>
+                <image src="/pages/images/erweima.jpg" mode="aspectFit"></image>
+                <button bindtap="hideQRCode" class="close-btn">关闭</button>
+            </view>
+        </view>
+    </view>
+</view>
+    

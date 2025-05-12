@@ -1,0 +1,8 @@
+<view class="container">
+  <view wx:for="{{records}}" wx:key="id" class="record-item">
+    <view>项目: {{item.project}}</view>
+    <view>时长: {{item.duration}} 分钟</view>
+    <view>强度: {{item.intensity}}</view>
+    <view>日期: {{item.date}}</view>
+  </view>
+</view>    

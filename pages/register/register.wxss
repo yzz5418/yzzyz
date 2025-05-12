@@ -1,0 +1,114 @@
+/* pages/register/register.wxss */
+.container {
+  padding: 50rpx 30rpx;
+}
+
+.logo-container {
+  width: 200rpx;
+  height: 200rpx;
+  margin: 0 auto 60rpx;
+}
+
+.logo-container image {
+  width: 100%;
+  height: 100%;
+}
+
+.form-container {
+  padding: 0 20rpx;
+}
+
+.input-group {
+  margin-bottom: 40rpx;
+}
+
+.label {
+  display: block;
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 15rpx;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  border: 1rpx solid #ddd;
+  border-radius: 10rpx;
+}
+
+.placeholder-style {
+  color: #999;
+}
+
+.password-input input {
+  padding-right: 80rpx; /* 为眼睛图标留出空间 */
+}
+
+.eye-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.error-message {
+  color: #f00;
+  font-size: 26rpx;
+  margin: 20rpx 0;
+  text-align: center;
+}
+
+.register-btn {
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  background-color: #009688;
+  color: #fff;
+  font-size: 32rpx;
+  border-radius: 10rpx;
+  margin-top: 40rpx;
+}
+
+.link-container {
+  text-align: center;
+  margin-top: 30rpx;
+}
+
+.link-container text {
+  color: #009688;
+  font-size: 28rpx;
+}
+/* pages/register/register.wxss */
+/* 其他样式保持不变 */
+
+.password-hint {
+  font-size: 24rpx;
+  margin-top: 10rpx;
+  padding-left: 20rpx;
+}
+
+.password-hint.valid {
+  color: #00B42A; /* 绿色表示密码长度符合要求 */
+}
+
+.password-hint.invalid {
+  color: #F53F3F; /* 红色表示密码长度不足 */
+}

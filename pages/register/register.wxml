@@ -1,0 +1,72 @@
+<!-- pages/register/register.wxml -->
+<view class="container">
+  <view class="logo-container">
+    <image src="/pages/images/logo.png" mode="aspectFit"></image>
+  </view>
+  
+  <view class="form-container">
+    <!-- 账号输入 -->
+    <view class="input-group">
+      <text class="label">账号</text>
+      <view class="input-wrapper">
+        <input 
+          type="text" 
+          placeholder="请输入账号" 
+          bindinput="onAccountInput" 
+          placeholder-class="placeholder-style"
+        />
+      </view>
+    </view>
+    
+    <!-- 密码输入 -->
+    <view class="input-group">
+      <text class="label">密码</text>
+      <view class="input-wrapper password-input">
+        <input 
+          type="{{passwordType}}" 
+          placeholder="请输入密码" 
+          bindinput="onPasswordInput" 
+          placeholder-class="placeholder-style"
+        />
+        <view class="eye-button" bindtap="togglePasswordVisibility">
+          <image 
+            class="eye-icon" 
+            src="{{showPassword ? '/pages/images/eye-open.png' : '/pages/images/eye-close.png'}}" 
+            mode="aspectFit" 
+          />
+        </view>
+      </view>
+      <text class="password-hint {{password.length >= 6 ? 'valid' : 'invalid'}}">
+        {{password.length}}/{{PASSWORD_MIN_LENGTH}} 位
+      </text>
+    </view>
+    
+    <!-- 确认密码输入 -->
+    <view class="input-group">
+      <text class="label">确认密码</text>
+      <view class="input-wrapper password-input">
+        <input 
+          type="{{confirmPasswordType}}" 
+          placeholder="请再次输入密码" 
+          bindinput="onConfirmPasswordInput" 
+          placeholder-class="placeholder-style"
+        />
+        <view class="eye-button" bindtap="toggleConfirmPasswordVisibility">
+          <image 
+            class="eye-icon" 
+            src="{{showConfirmPassword ? '/pages/images/eye-open.png' : '/pages/images/eye-close.png'}}" 
+            mode="aspectFit" 
+          />
+        </view>
+      </view>
+    </view>
+    
+    <text class="error-message">{{errorMessage}}</text>
+    
+    <button class="register-btn" bindtap="onRegister">注册</button>
+    
+    <view class="link-container">
+      <text bindtap="goToLogin">已有账号？立即登录</text>
+    </view>
+  </view>
+</view>

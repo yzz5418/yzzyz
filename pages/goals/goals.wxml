@@ -1,0 +1,11 @@
+<view class="container">
+  <view class="input-item">
+    <label>每周打卡次数</label>
+    <input type="number" placeholder="请输入每周打卡次数" bindinput="inputWeeklyCheckins" value="{{weeklyCheckins}}" />
+  </view>
+  <view class="input-item">
+    <label>每月总时长（分钟）</label>
+    <input type="number" placeholder="请输入每月总时长" bindinput="inputMonthlyDuration" value="{{monthlyDuration}}" />
+  </view>
+  <button bindtap="submitGoals">提交目标</button>
+</view>    

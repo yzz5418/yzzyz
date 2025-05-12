@@ -1,0 +1,36 @@
+<!-- pages/login/login.wxml -->
+<view class="container">
+  <view class="logo-container">
+    <image src="/pages/images/logo.png" mode="aspectFit"></image>
+  </view>
+  
+  <view class="form-container">
+    <view class="input-group">
+      <text class="label">账号</text>
+      <input 
+        type="text" 
+        placeholder="请输入账号" 
+        bindinput="onAccountInput" 
+        placeholder-class="placeholder-style"
+      />
+    </view>
+    
+    <view class="input-group">
+      <text class="label">密码</text>
+      <input 
+        type="password" 
+        placeholder="请输入密码" 
+        bindinput="onPasswordInput" 
+        placeholder-class="placeholder-style"
+      />
+    </view>
+    
+    <text class="error-message">{{errorMessage}}</text>
+    
+    <button class="login-btn" bindtap="onLogin">登录</button>
+    
+    <view class="link-container">
+      <text bindtap="goToRegister">没有账号？立即注册</text>
+    </view>
+  </view>
+</view>

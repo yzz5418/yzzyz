@@ -1,0 +1,11 @@
+<view class="container">
+  <view class="info-item">
+    <text>账号: {{userInfo.account}}</text>
+  </view>
+  <view class="info-item">
+    <text>总打卡次数: {{userInfo.totalCheckins}}</text>
+  </view>
+  <view class="info-item">
+    <text>总打卡时长: {{userInfo.totalDuration}} 分钟</text>
+  </view>
+</view>
