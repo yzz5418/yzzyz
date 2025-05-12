@@ -1,26 +1,44 @@
-const cloud = require('wx-server-sdk');
-cloud.init();
-const db = cloud.database();
+// cloudfunctions/getStatistics/index.js
+const cloud = require('wx-server-sdk')
+cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
+const db = cloud.database()
 
 exports.main = async (event, context) => {
-  const wxContext = cloud.getWXContext();
   try {
-    const res = await db.collection('fitness_records')
-     .where({
-        openid: wxContext.OPENID
+    const wxContext = cloud.getWXContext()
+    const openid = wxContext.OPENID
+    
+    // 获取所有打卡记录
+    const checkinRecords = await db.collection('checkinRecords')
+      .where({
+        _openid: openid
       })
-     .get();
-    const records = res.data;
-    const totalCheckins = records.length;
-    let totalDuration = 0;
-    records.forEach(record => {
-      totalDuration += record.duration;
-    });
+      .get()
+    
+    // 计算总打卡次数
+    const totalCheckins = checkinRecords.data.length
+    
+    // 计算总打卡时长（毫秒转分钟）
+    let totalDuration = 0
+    checkinRecords.data.forEach(record => {
+      // 确保记录同时包含开始和结束时间
+      if (record.startTime && record.endTime) {
+        const startTime = new Date(record.startTime).getTime()
+        const endTime = new Date(record.endTime).getTime()
+        
+        // 确保结束时间大于开始时间
+        if (endTime > startTime) {
+          totalDuration += (endTime - startTime) / (1000 * 60) // 转换为分钟
+        }
+      }
+    })
+    
     return {
       totalCheckins,
-      totalDuration
-    };
+      totalDuration: Math.round(totalDuration) // 四舍五入取整
+    }
   } catch (e) {
-    console.error(e);
+    console.error('获取统计信息失败', e)
+    throw e
   }
-};    
+}

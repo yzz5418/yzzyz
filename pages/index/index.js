@@ -1,16 +1,16 @@
 // pages/index/index.js
 Page({
   data: {
-    selectedType: '',
-    selectedTypeIndex: 0,
-    duration: '',
-    note: '',
-    types: ['专注', '学习', '工作', '运动', '阅读'],
-    userInfo: null,
-    isLoading: false,
-    errorMessage: '',
-    successMessage: '',
-    currentDate: ''
+    selectedType: '',       // 当前选择的打卡类型
+    selectedTypeIndex: 0,   // 选择器中的类型索引
+    duration: '',           // 打卡时长
+    note: '',               // 备注信息
+    types: ['专注', '学习', '工作', '运动', '阅读'], // 打卡类型列表
+    userInfo: null,         // 用户信息
+    isLoading: false,       // 加载状态
+    errorMessage: '',       // 错误提示
+    successMessage: '',     // 成功提示
+    currentDate: ''         // 当前日期
   },
 
   onLoad() {
@@ -51,7 +51,7 @@ Page({
   onTypeSelect(e) {
     const index = e.detail.value;
     const type = this.data.types[index];
-
+    
     this.setData({
       selectedTypeIndex: index,
       selectedType: type
@@ -115,7 +115,7 @@ Page({
     }
 
     const userInfo = this.data.userInfo;
-    if (!userInfo ||!userInfo.account) {
+    if (!userInfo || !userInfo.account) {
       this.showError('请先登录');
       return;
     }
@@ -123,24 +123,25 @@ Page({
     this.setData({ isLoading: true });
 
     try {
+      // 调用云函数添加打卡记录
       const result = await this.callAddRecordCloudFunction();
-
+      
       console.log('云函数返回结果:', result);
 
       if (result && result.success) {
         // 更新本地用户信息
-        userInfo.totalCheckins = (userInfo.totalCheckins || 0) + (result.isNewRecord? 1 : 0);
+        userInfo.totalCheckins = (userInfo.totalCheckins || 0) + (result.isNewRecord ? 1 : 0);
         userInfo.totalDuration = (userInfo.totalDuration || 0) + parseInt(this.data.duration);
         wx.setStorageSync('userInfo', userInfo);
-
+        
         this.setData({
           userInfo,
           isLoading: false
         });
-
+        
         // 显示成功提示
         this.showSuccess(result.message || '打卡成功！');
-
+        
         // 延迟重置表单
         setTimeout(() => {
           this.initPageData();
@@ -170,90 +171,11 @@ Page({
         },
         success: res => {
           // 检查云函数返回格式是否符合预期
-          if (!res ||!res.result) {
-            reject(new Error('云函数返回结构异常: 缺少 result 字段'));
-            return;
+          if (res.result && typeof res.result.success !== 'undefined') {
+            resolve(res.result);
+          } else {
+            reject(new Error('云函数返回格式不正确'));
           }
-
-          if (typeof res.result.success === 'undefined') {
-            reject(new Error(`云函数返回格式不正确: ${JSON.stringify(res.result)}`));
-            return;
-          }
-
-          resolve(res.result);
-        },
-        fail: err => {
-          reject(err);
-        }
-      });
-    });
-  },
-
-  // 删除所有打卡记录
-  async deleteRecord() {
-    const userInfo = this.data.userInfo;
-    if (!userInfo ||!userInfo.account) {
-      this.showError('请先登录');
-      return;
-    }
-
-    this.setData({ isLoading: true });
-
-    try {
-      const result = await this.callDeleteRecordCloudFunction();
-
-      console.log('删除记录云函数返回结果:', result);
-
-      if (result && result.success) {
-        // 更新本地用户信息
-        userInfo.totalCheckins = 0;
-        userInfo.totalDuration = 0;
-        wx.setStorageSync('userInfo', userInfo);
-
-        this.setData({
-          userInfo,
-          isLoading: false
-        });
-
-        // 显示成功提示
-        this.showSuccess('所有打卡记录已删除！');
-
-        // 延迟重置表单
-        setTimeout(() => {
-          this.initPageData();
-        }, 2000);
-      } else {
-        this.setData({ isLoading: false });
-        this.showError(result.message || '删除记录失败，请重试');
-      }
-    } catch (error) {
-      console.error('调用删除记录云函数出错:', error);
-      this.setData({ isLoading: false });
-      this.showError('网络错误，请重试');
-    }
-  },
-
-  // 调用删除打卡记录的云函数
-  callDeleteRecordCloudFunction() {
-    return new Promise((resolve, reject) => {
-      wx.cloud.callFunction({
-        name: 'deleteRecord',
-        data: {
-          account: this.data.userInfo.account
-        },
-        success: res => {
-          // 检查云函数返回格式是否符合预期
-          if (!res ||!res.result) {
-            reject(new Error('云函数返回结构异常: 缺少 result 字段'));
-            return;
-          }
-
-          if (typeof res.result.success === 'undefined') {
-            reject(new Error(`云函数返回格式不正确: ${JSON.stringify(res.result)}`));
-            return;
-          }
-
-          resolve(res.result);
         },
         fail: err => {
           reject(err);

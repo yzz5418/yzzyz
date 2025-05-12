@@ -1,11 +1,32 @@
+<!-- pages/userinfo/userinfo.wxml -->
 <view class="container">
-  <view class="info-item">
-    <text>账号: {{userInfo.account}}</text>
+  <!-- 头像 -->
+  <view class="avatar-container">
+    <image class="avatar" src="{{userInfo.avatar || '/pages/images/logo.png'}}" mode="aspectFill"></image>
+    <button class="avatar-btn" bindtap="changeAvatar">更换头像</button>
   </view>
-  <view class="info-item">
-    <text>总打卡次数: {{userInfo.totalCheckins}}</text>
+  <!-- 用户信息卡片 -->
+  <view class="info-card">
+    <view class="info-item">
+      <text class="info-label">账号:</text>
+      <text>{{userInfo.account}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">总打卡次数:</text>
+      <text>{{userInfo.totalCheckins}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">总打卡时长:</text>
+      <text>{{userInfo.totalDuration}} 分钟</text>
+    </view>
   </view>
-  <view class="info-item">
-    <text>总打卡时长: {{userInfo.totalDuration}} 分钟</text>
+  <!-- 按钮组 -->
+  <view class="btn-group">
+    <button class="btn" bindtap="goToHistory">查看历史打卡记录</button>
+    <button class="btn" bindtap="contactCustomerService">联系客服</button>
+  </view>
+  <!-- 客服服务 -->
+  <view class="customer-service">
+    <text bindtap="contactCustomerService">如有疑问，点击联系客服</text>
   </view>
 </view>

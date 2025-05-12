@@ -37,7 +37,7 @@ exports.main = async (event, context) => {
     
     try {
       // 检查今天是否已有打卡记录
-      const todayRecords = await transaction.collection('checkins').where({
+      const todayRecords = await transaction.collection('fitness_records').where({
         account: account,
         date: _.gte(todayStart).lt(todayEnd)
       }).get();
@@ -45,8 +45,8 @@ exports.main = async (event, context) => {
       if (todayRecords.data && todayRecords.data.length > 0) {
         // 如果已有记录，更新记录
         const recordId = todayRecords.data[0]._id;
-        
-        await transaction.collection('checkins').doc(recordId).update({
+  
+        await transaction.collection('fitness_records').doc(account).update({
           data: {
             duration: _.inc(duration),
             type: type,
@@ -56,8 +56,9 @@ exports.main = async (event, context) => {
         });
         
         // 更新用户总时长（不增加打卡次数）
-        await transaction.collection('users').doc(userId).update({
+        await transaction.collection('users').doc(account).update({
           data: {
+            type:type,
             totalDuration: _.inc(duration)
           }
         });
